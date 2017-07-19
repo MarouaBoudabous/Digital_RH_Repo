@@ -38,11 +38,11 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 			Block mergedWords = new WordMerger(pdfPage, pdfPage.getFragments()).merge();
 			Block splittedWords = new WordSplitter(pdfPage, mergedWords).split();
 			Block mergedLines = new LineMerger(pdfPage, splittedWords).merge();
-			Block splitedLines = mergedLines; 
-			Block cleanedLines = new LineCleaner(pdfPage, splitedLines).clean();
-			Block cleanedLines2 = cleanedLines; 
-			double lineSpacing = new LineSpacingDetector(cleanedLines2).getLineSpacing();
-			Block blocksFragments = new BlockMerger(pdfPage, cleanedLines2, lineSpacing, idToFont).merge();
+			//Block splitedLines = mergedLines; 
+			Block cleanedLines = new LineCleaner(pdfPage, mergedLines).clean();
+			//Block cleanedLines2 = cleanedLines; 
+			double lineSpacing = new LineSpacingDetector(cleanedLines).getLineSpacing();
+			Block blocksFragments = new BlockMerger(pdfPage, cleanedLines, lineSpacing, idToFont).merge();
 			Block splitedBlocks = new BlockSplitter(pdfPage, blocksFragments).split();
 
 			for (int i = 0; i < splitedBlocks.getLineBlocks().size(); i++) {

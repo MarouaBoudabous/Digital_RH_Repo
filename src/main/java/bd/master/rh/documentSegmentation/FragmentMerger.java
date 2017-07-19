@@ -198,8 +198,8 @@ public abstract class FragmentMerger {
                 sorted.addAll(c.fragments);
                 entry = new Block(page, new ArrayList<TextBlock>(sorted));
             }
-            
-            collections.add(entry);
+            System.out.println(entry.getText());
+            collections.add(entry);System.out.println(collections.size());
         }
         
         return new Block(page, collections);

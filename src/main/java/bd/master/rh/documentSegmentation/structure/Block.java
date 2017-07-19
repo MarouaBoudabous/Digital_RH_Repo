@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.SortedSet;
 
-public class Block {
+public class Block implements Comparable<Block> {
 
 	private List<TextBlock> fragments;
 	private Box BoundingBox;
@@ -93,13 +93,26 @@ public class Block {
 	}
 
 	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
+		String text="";
+		for (TextBlock f : fragments) {
+			text= text + f.getCharacters();
+		}
+		return text;
+	}
+
+	@Override
+	public String toString() {
+		return getText();
 	}
 
 	public Page getPage() {
 		
 		return this.page;
+	}
+
+	public int compareTo(Block o) {
+		System.out.println("Test");
+		return this.getText().compareToIgnoreCase(o.getText());
 	}
 
 }
