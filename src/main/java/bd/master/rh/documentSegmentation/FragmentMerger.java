@@ -186,6 +186,8 @@ public abstract class FragmentMerger {
 
     private Block getMergeResult() {
         SortedSet<Block> collections = new TreeSet<Block>(getResultCollectionOrder());
+        List<Block> list = new ArrayList<Block>();
+        int k =0;
         
         for (Cluster c : clusters) {
             Block entry;
@@ -198,8 +200,33 @@ public abstract class FragmentMerger {
                 sorted.addAll(c.fragments);
                 entry = new Block(page, new ArrayList<TextBlock>(sorted));
             }
-            System.out.println(entry.getText());
-            collections.add(entry);System.out.println(collections.size());
+//            System.out.println(entry.getText());
+            list.add(entry);
+//            if(collections.size()>0) {
+//            	System.out.println(collections.first().getText().hashCode()- entry.getText().hashCode());
+//            	System.out.println(entry.getText().hashCode()- collections.first().getText().hashCode());
+//            }
+         
+            Boolean test = collections.contains(entry); 
+//            for (Block block : collections) {
+//            	System.out.println("**************************");
+//				System.out.println(block.compareTo(entry));
+//				System.out.println(entry.equals(block));
+//				System.out.println(entry.hashCode());
+//				System.out.println(block.hashCode());
+//				System.out.println("Comparaison result       .."+ block.compareTo(entry));
+//				System.out.println("Comparaison result       "+ entry.compareTo(block));
+//				System.out.println("**************************");
+//			}
+            collections.add(entry);
+            if (collections.contains(entry) != test ) {
+            	System.out.println(entry.getText());
+            	k++;
+            }
+            
+            //collections.add(entry);
+            System.out.println(k);
+            System.out.println(collections.size());
         }
         
         return new Block(page, collections);

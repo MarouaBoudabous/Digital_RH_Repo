@@ -36,6 +36,8 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 		final Map<Integer, Font> idToFont = new HashMap<Integer, Font>();
 		for (Page pdfPage : pdfDocument.getPages()) {
 			Block mergedWords = new WordMerger(pdfPage, pdfPage.getFragments()).merge();
+			System.out.println("FFFFFFFFFFF");
+			System.out.println(mergedWords.getSubBlocks().size());
 			Block splittedWords = new WordSplitter(pdfPage, mergedWords).split();
 			Block mergedLines = new LineMerger(pdfPage, splittedWords).merge();
 			//Block splitedLines = mergedLines; 

@@ -30,51 +30,51 @@ import java.util.TreeSet;
 import bd.master.rh.documentSegmentation.structure.Block;
 import bd.master.rh.documentSegmentation.structure.TextBlock;
 
-
 /**
  * Helper to compute the average line spacing of all lines.
  * 
  * @author Roman Kern <rkern@tugraz.at>
  */
 public class LineSpacingDetector {
-    private double lineSpacing;
+	private double lineSpacing;
 
-    /**
-     * Creates a new instance of this class.
-     * @param lines
-     */
-    public LineSpacingDetector(Block lines) {
-        TreeSet<Block> set = new TreeSet<Block>(
-                Block.VERTICAL_FRAGMENTS);
-        set.addAll(lines.getSubBlocks());
-        
-        double end = Double.NaN;
-        Stats stats = new Stats();
-        for (Block c : set) {
-            List<TextBlock> fragments = c.getFragments();
-            double delta;
-            if (!Double.isNaN(end)) {
-                delta = BlockSplitter.doGetDelta(fragments, end) / BlockSplitter.getAvgHeight(fragments);
-                if (delta > 1 && delta < 5) {
-                    stats.increment(delta);
-                }
-            } else {
-                delta = 0;
-            }
-            end = BlockSplitter.doGetEnd(fragments);
-        }
-        lineSpacing = stats.getMaxExpected(0.2); // mean + 0.2*stdev
-        if (Double.isNaN(lineSpacing)) {
-            lineSpacing = 1.5;
-        }
-    }
+	/**
+	 * Creates a new instance of this class.
+	 * 
+	 * @param lines
+	 */
+	public LineSpacingDetector(Block lines) {
+		TreeSet<Block> set = new TreeSet<Block>(Block.VERTICAL_FRAGMENTS);
+		set.addAll(lines.getSubBlocks());
+		double end = Double.NaN;
+		Stats stats = new Stats();
+		for (Block c : set) {
+			c.fillFragmentsIfNull();
+			List<TextBlock> fragments = c.getFragments();
+			double delta;
+			if (!Double.isNaN(end)) {
+				delta = BlockSplitter.doGetDelta(fragments, end) / BlockSplitter.getAvgHeight(fragments);
+				if (delta > 1 && delta < 5) {
+					stats.increment(delta);
+				}
+			} else {
+				delta = 0;
+			}
+			end = BlockSplitter.doGetEnd(fragments);
+		}
+		lineSpacing = stats.getMaxExpected(0.2); // mean + 0.2*stdev
+		if (Double.isNaN(lineSpacing)) {
+			lineSpacing = 1.5;
+		}
+	}
 
-    /**
-     * The expected line spacing
-     * @return
-     */
-    public double getLineSpacing() {
-        return lineSpacing;
-    }
+	/**
+	 * The expected line spacing
+	 * 
+	 * @return
+	 */
+	public double getLineSpacing() {
+		return lineSpacing;
+	}
 
 }

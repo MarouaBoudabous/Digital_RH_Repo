@@ -379,7 +379,7 @@ final class Cluster {
     
     static final Comparator<TextBlock> HORIZONTAL_FRAGEMENTS = new Comparator<TextBlock>() {
         public int compare(TextBlock o1, TextBlock o2) {
-            return o1.getSequence() - o2.getSequence();
+             return o1.getSequence() - o2.getSequence();
         }
     };
 
