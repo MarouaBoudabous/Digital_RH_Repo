@@ -189,7 +189,7 @@ public class ParagraphExtractor {
     }
     
     private OutlierInformation detectOutliers(TFloatArrayList values, float min, float max, float avgFragSize, boolean isHigher) {
-        // TODO: implement k-means (multiple iterations)
+        // implement k-means (multiple iterations)
         TIntArrayList mn = new TIntArrayList(values.size()), 
                       mx = new TIntArrayList(values.size());
         float cn = 0, cx = 0, ocn = min, ocx = max;
