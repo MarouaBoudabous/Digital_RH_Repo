@@ -50,16 +50,42 @@ public class Block implements Comparable {
 	public static final Comparator<Block> HORIZONTAL_FRAGMENTS = new Comparator<Block>() {
 
 		public int compare(Block b1, Block b2) {
-			if ((b1.getBoundingBox().getxTopLeftCorner() > b2.getBoundingBox().getxTopLeftCorner())) {
-				if ((b1.getBoundingBox().getyBottomRightCorner() <= b2.getBoundingBox().getyBottomRightCorner()))
-					return 1;
+
+			if ((b1.getBoundingBox().getxTopLeftCorner() < b2.getBoundingBox().getxTopLeftCorner())
+					&& isAtSameHorizontalLevel(b1, b2)) {
+				return -1;
 			}
-			if ((b1.getBoundingBox().getxBottomRightCorner() < b2.getBoundingBox().getxTopLeftCorner())) {
-				if (b1.getBoundingBox().getyBottomRightCorner() >= b2.getBoundingBox().getyBottomRightCorner())
+			if ((b1.getBoundingBox().getxTopLeftCorner() < b2.getBoundingBox().getxTopLeftCorner())
+					&& !isAtSameHorizontalLevel(b1, b2)) {
+				if (b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner())
 					return -1;
 				else
 					return 1;
-
+			}
+			if ((b1.getBoundingBox().getxTopLeftCorner() > b2.getBoundingBox().getxTopLeftCorner())
+					&& isAtSameHorizontalLevel(b1, b2)) {
+				return 1;
+			}
+			if ((b1.getBoundingBox().getxTopLeftCorner() > b2.getBoundingBox().getxTopLeftCorner())
+					&& !isAtSameHorizontalLevel(b1, b2)) {
+				if (b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner())
+					return 1;
+				else
+					return -1;
+			}
+			if((b1.getBoundingBox().getxTopLeftCorner() == b2.getBoundingBox().getxTopLeftCorner())&& !isAtSameHorizontalLevel(b1, b2)) {
+				if(b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner())
+				{
+					return -1;
+				}
+				if(b1.getBoundingBox().getyBottomRightCorner() > b2.getBoundingBox().getyBottomRightCorner())
+				{
+					return 1;
+				}
+				if(b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner())
+				{
+					return 0;
+				}
 			}
 
 			return 0;
@@ -206,6 +232,10 @@ public class Block implements Comparable {
 		} else if (!getText().equals(other.getText()))
 			return false;
 		return true;
+	}
+
+	public static Boolean isAtSameHorizontalLevel(Block b1, Block b2) {
+		return b1.getBoundingBox().getyBottomRightCorner() == b2.getBoundingBox().getyBottomRightCorner();
 	}
 
 }
