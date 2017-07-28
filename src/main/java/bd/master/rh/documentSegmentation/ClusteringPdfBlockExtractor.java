@@ -15,12 +15,10 @@ import bd.master.rh.documentSegmentation.structure.Font;
 import bd.master.rh.documentSegmentation.structure.Page;
 import bd.master.rh.documentSegmentation.structure.TextBlock;
 
-
 public class ClusteringPdfBlockExtractor implements BlockProcessor {
 	private static final Logger logger = Logger.getLogger(ClusteringPdfBlockExtractor.class.getName());
 
 	public static boolean debug;
-
 
 	public List<String> doi = new ArrayList<String>();
 
@@ -38,14 +36,11 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 			Block mergedWords = new WordMerger(pdfPage, pdfPage.getFragments()).merge();
 			Block splittedWords = new WordSplitter(pdfPage, mergedWords).split();
 			Block mergedLines = new LineMerger(pdfPage, splittedWords).merge();
-			//Block splitedLines = mergedLines; 
+			// Block splitedLines = mergedLines;
 			Block cleanedLines = new LineCleaner(pdfPage, mergedLines).clean();
-			//Block cleanedLines2 = cleanedLines; 
+			// Block cleanedLines2 = cleanedLines;
 			double lineSpacing = new LineSpacingDetector(cleanedLines).getLineSpacing();
 			Block blocksFragments = new BlockMerger(pdfPage, cleanedLines, lineSpacing, idToFont).merge();
-			for (Block block : blocksFragments.getSubBlocks()) {
-				System.out.println(block.toString() + "\n");
-			}
 			Block splitedBlocks = new BlockSplitter(pdfPage, blocksFragments).split();
 
 			for (int i = 0; i < splitedBlocks.getLineBlocks().size(); i++) {
@@ -61,8 +56,8 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 			}
 
 			pageBlocks.add(new BlocksEntry(pdfPage, splitedBlocks));
-
-			if (debug) {
+			Boolean justForTest = Boolean.TRUE;
+			if (justForTest) {
 				debugOutput(splitedBlocks, id);
 			}
 		}
@@ -129,7 +124,7 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 	 * 
 	 */
 	private void debugOutput(Block blocksFragments, String id) {
-	
+
 		System.out.println(id);
 		for (Block blocks : blocksFragments.getSubBlocks()) {
 			System.out.println("--");
@@ -160,7 +155,6 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 		}
 	}
 
-	
 	private static class BlocksEntry {
 		final Page pdfPage;
 		final Block blocks;

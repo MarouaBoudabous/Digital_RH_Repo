@@ -44,7 +44,7 @@ public class Box {
 	}
 
 	public float getMinx() {
-		return minx;
+		return this.xTopLeftCorner;
 	}
 
 	public void setMinx(float minx) {
@@ -52,7 +52,7 @@ public class Box {
 	}
 
 	public float getMaxx() {
-		return maxx;
+		return this.xBottomRightCorner;
 	}
 
 	public void setMaxx(float maxx) {

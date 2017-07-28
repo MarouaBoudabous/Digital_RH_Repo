@@ -93,6 +93,10 @@ public class Block implements Comparable {
 	};
 
 	public List<Block> getLineBlocks() {
+		lineBlocks = new ArrayList<Block>();
+		for (Block b : subBlocks) {
+			lineBlocks.add(b);
+		}
 		return lineBlocks;
 	}
 
