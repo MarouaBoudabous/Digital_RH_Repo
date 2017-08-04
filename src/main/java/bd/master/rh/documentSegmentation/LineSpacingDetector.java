@@ -33,7 +33,7 @@ import bd.master.rh.documentSegmentation.structure.TextBlock;
 /**
  * Helper to compute the average line spacing of all lines.
  * 
- * @author Roman Kern <rkern@tugraz.at>
+ *
  */
 public class LineSpacingDetector {
 	private double lineSpacing;

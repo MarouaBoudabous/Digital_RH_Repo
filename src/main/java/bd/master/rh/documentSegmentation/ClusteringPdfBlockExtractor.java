@@ -43,17 +43,17 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 			Block blocksFragments = new BlockMerger(pdfPage, cleanedLines, lineSpacing, idToFont).merge();
 			Block splitedBlocks = new BlockSplitter(pdfPage, blocksFragments).split();
 
-			for (int i = 0; i < splitedBlocks.getLineBlocks().size(); i++) {
-				String line2 = splitedBlocks.getLineBlocks().toString();
-				String regEx = "10\\.[0-9]{4,}/[^\\s]*[^\\s\\.,]";
-				Pattern pattern = Pattern.compile(regEx);
-				Matcher matcher = pattern.matcher(line2);
-
-				if (matcher.find() && (matcher.group() != null && !doi.contains(matcher.group()))) {
-					doi.add(matcher.group());
-				}
-
-			}
+//			for (int i = 0; i < splitedBlocks.getLineBlocks().size(); i++) {
+//				String line2 = splitedBlocks.getLineBlocks().toString();
+//				String regEx = "10\\.[0-9]{4,}/[^\\s]*[^\\s\\.,]";
+//				Pattern pattern = Pattern.compile(regEx);
+//				Matcher matcher = pattern.matcher(line2);
+//
+//				if (matcher.find() && (matcher.group() != null && !doi.contains(matcher.group()))) {
+//					doi.add(matcher.group());
+//				}
+//
+//			}
 
 			pageBlocks.add(new BlocksEntry(pdfPage, splitedBlocks));
 			Boolean justForTest = Boolean.TRUE;
@@ -100,7 +100,7 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 	private List<Block> getPages(List<BlocksEntry> blockEntries) {
 		List<Block> result = new ArrayList<Block>();
 		for (BlocksEntry pageEntry : blockEntries) {
-			result.add(pageEntry.blocks);
+			result.addAll(pageEntry.blocks.getSubBlocks());
 		}
 		return result;
 

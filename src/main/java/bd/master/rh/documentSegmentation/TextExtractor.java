@@ -2,9 +2,8 @@ package bd.master.rh.documentSegmentation;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.nio.channels.spi.SelectorProvider;
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,18 +12,17 @@ import java.util.Map;
 import org.apache.pdfbox.pdmodel.common.PDMatrix;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDFontDescriptor;
-import org.apache.pdfbox.util.Matrix;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.pdfbox.util.ResourceLoader;
 import org.apache.pdfbox.util.TextNormalize;
 import org.apache.pdfbox.util.TextPosition;
 
-import bd.master.rh.documentSegmentation.structure.Page;
-import bd.master.rh.documentSegmentation.structure.Position;
-import bd.master.rh.documentSegmentation.structure.TextBlock;
 import bd.master.rh.documentSegmentation.structure.Box;
 import bd.master.rh.documentSegmentation.structure.Font ;
 import bd.master.rh.documentSegmentation.structure.Line;
+import bd.master.rh.documentSegmentation.structure.Page;
+import bd.master.rh.documentSegmentation.structure.Position;
+import bd.master.rh.documentSegmentation.structure.TextBlock;
 
 public class TextExtractor extends PDFTextStripper {
 
@@ -137,6 +135,9 @@ public class TextExtractor extends PDFTextStripper {
 	public TextExtractor(Page pdfPage, Map<Integer, Font> idToFont, Map<Object, Integer> fonts)throws IOException {
 		// TODO Auto-generated constructor stub
 		super(ResourceLoader.loadProperties("pdfbox.properties", true ));
+		
+		
+		
 		
 		this.pdfPage = pdfPage;
         this.idToFont = idToFont;
