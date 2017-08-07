@@ -34,7 +34,7 @@ import bd.master.rh.documentSegmentation.structure.TextBlock;
 /**
  * Merger for fragments by using a horizontal layout assumption.
  * 
- * @author Roman Kern <rkern@tugraz.at>
+ *
  */
 public abstract class HorizontalFragmentMerger extends FragmentMerger {
     /** HorizontalFragmentMerger mergeThresholdX */

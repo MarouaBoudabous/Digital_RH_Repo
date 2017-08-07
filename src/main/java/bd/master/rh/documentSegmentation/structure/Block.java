@@ -2,8 +2,11 @@ package bd.master.rh.documentSegmentation.structure;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
+
+import org.apache.commons.math3.ml.distance.DistanceMeasure;
 
 public class Block implements Comparable {
 
@@ -73,17 +76,15 @@ public class Block implements Comparable {
 				else
 					return -1;
 			}
-			if((b1.getBoundingBox().getxTopLeftCorner() == b2.getBoundingBox().getxTopLeftCorner())&& !isAtSameHorizontalLevel(b1, b2)) {
-				if(b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner())
-				{
+			if ((b1.getBoundingBox().getxTopLeftCorner() == b2.getBoundingBox().getxTopLeftCorner())
+					&& !isAtSameHorizontalLevel(b1, b2)) {
+				if (b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner()) {
 					return -1;
 				}
-				if(b1.getBoundingBox().getyBottomRightCorner() > b2.getBoundingBox().getyBottomRightCorner())
-				{
+				if (b1.getBoundingBox().getyBottomRightCorner() > b2.getBoundingBox().getyBottomRightCorner()) {
 					return 1;
 				}
-				if(b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner())
-				{
+				if (b1.getBoundingBox().getyBottomRightCorner() < b2.getBoundingBox().getyBottomRightCorner()) {
 					return 0;
 				}
 			}
@@ -192,13 +193,35 @@ public class Block implements Comparable {
 
 	public String getText() {
 		String text = "";
-		if (fragments != null) {
-			for (TextBlock f : fragments) {
-				text = text + f.getCharacters();
-			}
+		double meanDistance = 0d;
+		if (fragments.size() >= 2) {
+			meanDistance = Math.abs(fragments.get(1).getPosition().getBoxCoord().getxTopLeftCorner()
+					- fragments.get(0).getPosition().getBoxCoord().getxBottomRightCorner());
 		}
+		if (fragments != null) {
+			text = text + fragments.get(0).getCharacters();
+			
+			for (int i = 2; i < fragments.size(); i++) {
+				Double dist = (double) Math
+						.round(Math
+								.abs(fragments.get(i).getPosition().getBoxCoord().getxTopLeftCorner()
+										- fragments.get(i - 1).getPosition().getBoxCoord().getxBottomRightCorner())
+								* 100)
+						/ 100;
+				Double meanDist = (double) Math.round((meanDistance + 0.02) * 100) / 100;
+				if (dist <= 0.6) {
+					text = text + fragments.get(i - 1).getCharacters();
+				} else {
+					text = text + fragments.get(i - 1).getCharacters() + " ";
+				}
+			}
+			text = text + fragments.get(fragments.size() - 1).getCharacters();
 
-		return text;
+		}
+		
+		
+
+		return text.trim();
 	}
 
 	@Override

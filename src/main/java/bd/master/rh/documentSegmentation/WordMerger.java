@@ -32,7 +32,7 @@ import bd.master.rh.documentSegmentation.structure.TextBlock;
 /**
  * 
  * 
- * @author Roman Kern <rkern@tugraz.at>
+ *
  */
 public class WordMerger extends HorizontalFragmentMerger {
 
