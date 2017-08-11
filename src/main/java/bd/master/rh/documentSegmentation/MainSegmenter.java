@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +23,7 @@ import bd.master.rh.documentSegmentation.structure.Section;
 import bd.master.rh.documentSegmentation.structure.TextBlock;
 
 public class MainSegmenter {
+
 	public static void main(String[] args) {
 		// segmentDocument();
 	}
@@ -87,9 +86,9 @@ public class MainSegmenter {
 			// Generating final result....
 			// TODO ...
 			generateFinalSegmentationResults(finalSections, extractedBlocks);
-			
+
 			for (Section section : finalSections) {
-				System.out.println("-- " + section.getTitle()+" --");
+				System.out.println("-- " + section.getTitle() + " --");
 				System.out.println(section.getContent());
 				System.out.println("-------------------------------");
 			}
@@ -106,64 +105,77 @@ public class MainSegmenter {
 	 * @param extractedBlocks
 	 */
 	private void generateFinalSegmentationResults(List<Section> finalSections, List<Block> extractedBlocks) {
-		Section firstSection= new Section();
+
+		Section firstSection = new Section();
 		firstSection.setTitle("Titre");
 		firstSection.setContent(extractedBlocks.get(0).toString());
 		finalSections.add(firstSection);
-		for (int i = 1; i <extractedBlocks.size(); i++) {
-			if(extractedBlocks.get(i).toString().contains("@")) {
-				Section sect = finalSections.get(finalSections.size()-1);
+		for (int i = 1; i < extractedBlocks.size(); i++) {
+			if (extractedBlocks.get(i).toString().contains("@")) {
+				Section sect = finalSections.get(finalSections.size() - 1);
 				sect.setTitle("Info-perso");
-				sect.setContent(finalSections.get(finalSections.size()-1).getContent()+extractedBlocks.get(i).toString());
+				sect.setContent(
+						finalSections.get(finalSections.size() - 1).getContent() + extractedBlocks.get(i).toString());
 				//finalSections.add(sect);
-				
-				
-			}else {
-			
-				if (discardPunctuationMarks(extractedBlocks.get(i)).split(" ").length <3) {
-				Section sect = new Section();
-				sect.setTitle(extractedBlocks.get(i).toString());
-				finalSections.add(sect);
-			}else {
-				
-				String content = "";
-				//"Info-perso"
-				if(finalSections.size()>1 && !finalSections.get(finalSections.size()-1).getTitle().equalsIgnoreCase("Info-perso") ) {
-					content= finalSections.get(finalSections.size()-1).getContent();
-				
+
+			} else {
+
+				if (discardPunctuationMarks(extractedBlocks.get(i)).split(" ").length < 3
+						&& hasTitleFont(extractedBlocks, i)) {
+					Section sect = new Section();
+					sect.setTitle(extractedBlocks.get(i).toString());
+					finalSections.add(sect);
+				} else {
+
+					String content = "";
+					// "Info-perso"
+					if (finalSections.size() > 1
+							&& !finalSections.get(finalSections.size() - 1).getTitle().equalsIgnoreCase("Info-perso")) {
+						content = finalSections.get(finalSections.size() - 1).getContent();
+
 						if (content != null) {
 							finalSections.get(finalSections.size() - 1)
 									.setContent(content + "\n" + extractedBlocks.get(i).toString());
 						} else {
 							finalSections.get(finalSections.size() - 1).setContent(extractedBlocks.get(i).toString());
-						} 
-					
-				}else {
-					Section sect= new Section();
-					sect.setTitle("");
-					sect.setContent(extractedBlocks.get(i).toString());
-					finalSections.add(sect);
+						}
+
+					} else {
+						Section sect = new Section();
+						sect.setTitle("");
+						sect.setContent(extractedBlocks.get(i).toString());
+						finalSections.add(sect);
+					}
+
 				}
-				
-				
-			}
 			}
 		}
-		
-//		for (Block block : extractedBlocks) {
-//			Section section = new Section();
-//			section.setTitle("");
-//			section.setContent(block.toString());
-//			finalSections.add(section);
-//		}
+
+		// for (Block block : extractedBlocks) {
+		// Section section = new Section();
+		// section.setTitle("");
+		// section.setContent(block.toString());
+		// finalSections.add(section);
+		// }
 	}
 
-	
-	
-	
+	/**
+	 * @param extractedBlocks
+	 * @param i
+	 */
+	private Boolean hasTitleFont(List<Block> extractedBlocks, int i) {
+		Boolean hasTitleFont = Boolean.FALSE;
+		for (TextBlock tbox : extractedBlocks.get(i).getFragments()) {
+			if (tbox.getFontId() != extractedBlocks.get(i-1).getFragments().get(0).getFontId()) {
+				hasTitleFont = Boolean.TRUE;
+			}
+		}
+		return hasTitleFont;
+	}
+
 	private String discardPunctuationMarks(Block block) {
 		String cleanedContent = block.toString().replaceAll(":", "");
-		
+
 		return cleanedContent;
 	}
 
