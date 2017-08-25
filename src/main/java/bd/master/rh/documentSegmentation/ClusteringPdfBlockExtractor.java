@@ -42,24 +42,15 @@ public class ClusteringPdfBlockExtractor implements BlockProcessor {
 			double lineSpacing = new LineSpacingDetector(cleanedLines).getLineSpacing();
 			Block blocksFragments = new BlockMerger(pdfPage, cleanedLines, lineSpacing, idToFont).merge();
 			Block splitedBlocks = new BlockSplitter(pdfPage, blocksFragments).split();
-
-//			for (int i = 0; i < splitedBlocks.getLineBlocks().size(); i++) {
-//				String line2 = splitedBlocks.getLineBlocks().toString();
-//				String regEx = "10\\.[0-9]{4,}/[^\\s]*[^\\s\\.,]";
-//				Pattern pattern = Pattern.compile(regEx);
-//				Matcher matcher = pattern.matcher(line2);
-//
-//				if (matcher.find() && (matcher.group() != null && !doi.contains(matcher.group()))) {
-//					doi.add(matcher.group());
-//				}
-//
-//			}
-
-			pageBlocks.add(new BlocksEntry(pdfPage, splitedBlocks));
-			Boolean justForTest = Boolean.TRUE;
-			if (justForTest) {
-				debugOutput(splitedBlocks, id);
-			}
+			double lineSpacing2 = new LineSpacingDetector(cleanedLines).getLineSpacing();
+			Block remergedBlocks = new BlockMerger(pdfPage, splitedBlocks, lineSpacing2, idToFont).merge();
+			Block reSplitedBlocks = new BlockSplitter(pdfPage, remergedBlocks).split();
+			BlocksEntry test = new BlocksEntry(pdfPage, splitedBlocks);
+			pageBlocks.add(new BlocksEntry(pdfPage, reSplitedBlocks));
+			// Boolean justForTest = Boolean.TRUE;
+			// if (justForTest) {
+			// debugOutput(reSplitedBlocks, id);
+			// }
 		}
 		System.out.println(doi.toString());
 		return getPages(pageBlocks);

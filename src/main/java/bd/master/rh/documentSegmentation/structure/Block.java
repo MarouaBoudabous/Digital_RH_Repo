@@ -38,13 +38,24 @@ public class Block implements Comparable {
 			} else if (b2.getBoundingBox().getyBottomRightCorner() < b1.getBoundingBox().getyBottomRightCorner()) {
 				return 1;
 			}
-			return 0;
+			return 1;
 		};
 	};
 
 	public static final Comparator<Block> ID_FRAGMENTS = new Comparator<Block>() {
 
 		public int compare(Block b1, Block b2) {
+			int test = b1.getFragments().get(b1.getFragments().size() - 1).getSequence()
+					- b2.getFragments().get(b2.getFragments().size() - 1).getSequence();
+			if (test == 0) {
+				if(!b1.toString().equalsIgnoreCase(b2.toString())) {
+					System.out.println(b1.toString());
+					System.out.println(b2.toString());
+				}
+				
+				b1.getFragments().get(b1.getFragments().size() - 1).getSequence();
+				b2.getFragments().get(b2.getFragments().size() - 1).getSequence();
+			}
 			return b1.getFragments().get(b1.getFragments().size() - 1).getSequence()
 					- b2.getFragments().get(b2.getFragments().size() - 1).getSequence();
 		};
@@ -89,7 +100,7 @@ public class Block implements Comparable {
 				}
 			}
 
-			return 0;
+			return 1;
 		};
 	};
 

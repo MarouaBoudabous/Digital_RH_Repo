@@ -79,7 +79,10 @@ public class LineCleaner extends AbstractSplitter {
             }
             if (!currentLine.isEmpty()) {
                 Block c = new Block(page, currentLine);
-                result.add(c);
+                Boolean test = result.add(c);
+                if (!test) {
+                	System.out.println("ALert!!!!    "+ c.getSubBlocks().toString()+ " exists");
+                }
             }
         }
         

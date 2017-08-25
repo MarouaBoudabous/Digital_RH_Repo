@@ -78,7 +78,7 @@ public abstract class HorizontalFragmentMerger extends FragmentMerger {
 
     @Override
     protected Comparator<Block> getResultCollectionOrder() {
-        return Block.ID_FRAGMENTS;
-        //return Block.HORIZONTAL_FRAGMENTS;
+      // return Block.ID_FRAGMENTS;
+      return Block.HORIZONTAL_FRAGMENTS;
     } 
 }
